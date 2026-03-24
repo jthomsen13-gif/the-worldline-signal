@@ -9,32 +9,32 @@
     --background: 40 33% 97%;
     --foreground: 240 6% 10%;
 
-    --card: 40 33% 97%;
+    --card: 40 20% 98%;
     --card-foreground: 240 6% 10%;
 
-    --popover: 40 33% 97%;
+    --popover: 40 20% 98%;
     --popover-foreground: 240 6% 10%;
 
     --primary: 240 6% 10%;
     --primary-foreground: 40 33% 97%;
 
-    --secondary: 35 20% 92%;
+    --secondary: 38 18% 93%;
     --secondary-foreground: 240 6% 10%;
 
-    --muted: 35 15% 90%;
+    --muted: 36 12% 89%;
     --muted-foreground: 240 4% 46%;
 
-    --accent: 0 72% 51%;
+    --accent: 8 60% 46%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 35 15% 85%;
-    --input: 35 15% 85%;
+    --border: 36 14% 86%;
+    --input: 36 14% 86%;
     --ring: 240 6% 10%;
 
-    --radius: 0.25rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 40 33% 95%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -44,8 +44,6 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 35 15% 85%;
     --sidebar-ring: 240 6% 10%;
-
-    --confidence: 0 72% 51%;
   }
 }
 
@@ -59,9 +57,12 @@
     font-family: Georgia, 'Times New Roman', Times, serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 15px;
+    line-height: 1.7;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Inter', sans-serif;
+    line-height: 1.2;
   }
 }
