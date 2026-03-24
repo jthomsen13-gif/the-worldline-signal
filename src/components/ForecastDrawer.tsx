@@ -26,8 +26,8 @@ interface ChainStep {
 const ForecastDrawer = ({ forecast, open, onClose }: ForecastDrawerProps) => {
   if (!forecast) return null;
 
-  const evidenceLinks = (forecast.evidence_links as EvidenceLink[] | null) ?? [];
-  const chain = (forecast.chain as ChainStep[] | null) ?? [];
+  const evidenceLinks = (forecast.evidence_links as unknown as EvidenceLink[] | null) ?? [];
+  const chain = (forecast.chain as unknown as ChainStep[] | null) ?? [];
 
   return (
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
