@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 
 const POLL_OPTIONS = [
   "Cost of living",
-  "Military/conflicts",
+  "Military / conflicts",
   "Energy infrastructure",
-  "Politics/elections",
+  "Politics / elections",
   "Something else",
 ];
 
@@ -32,8 +30,7 @@ const PollWidget = () => {
     setLoading(true);
 
     const sessionId =
-      localStorage.getItem("worldline_session_id") ||
-      crypto.randomUUID();
+      localStorage.getItem("worldline_session_id") || crypto.randomUUID();
     localStorage.setItem("worldline_session_id", sessionId);
 
     await supabase.from("poll_votes").insert({
@@ -49,10 +46,13 @@ const PollWidget = () => {
 
   if (hasVoted) {
     return (
-      <section className="mx-auto max-w-2xl px-4 pb-16 text-center">
-        <div className="rounded-sm border border-border bg-card p-6">
+      <section className="mx-auto max-w-6xl px-6 pb-24">
+        <div className="mx-auto max-w-lg rounded-lg border border-border/50 bg-card p-8 text-center shadow-sm">
           <p className="font-sans text-sm font-medium text-foreground">
-            Thanks for voting. Your input shapes what we predict next.
+            Thanks for voting.
+          </p>
+          <p className="mt-1 text-[13px] text-muted-foreground">
+            Your input shapes what we predict next.
           </p>
         </div>
       </section>
@@ -60,40 +60,57 @@ const PollWidget = () => {
   }
 
   return (
-    <section className="mx-auto max-w-2xl px-4 pb-16">
-      <div className="rounded-sm border border-border bg-card p-6">
-        <h3 className="font-sans text-base font-bold text-foreground">
+    <section className="mx-auto max-w-6xl px-6 pb-24">
+      <div className="mx-auto max-w-lg rounded-lg border border-border/50 bg-card p-8 shadow-sm">
+        <h3 className="font-sans text-base font-bold tracking-tight text-foreground">
           What should we predict next?
         </h3>
+        <p className="mt-1 text-[13px] text-muted-foreground">
+          Pick a topic. We'll investigate.
+        </p>
 
-        <RadioGroup
-          value={selected}
-          onValueChange={setSelected}
-          className="mt-4 space-y-2"
-        >
+        <div className="mt-5 space-y-2">
           {POLL_OPTIONS.map((option) => (
-            <div key={option} className="flex items-center gap-3">
-              <RadioGroupItem value={option} id={option} />
-              <Label htmlFor={option} className="text-sm cursor-pointer">
+            <button
+              key={option}
+              onClick={() => setSelected(option)}
+              className={`flex w-full items-center gap-3 rounded-md border px-4 py-3 text-left text-[13px] transition-all ${
+                selected === option
+                  ? "border-foreground/30 bg-secondary shadow-sm"
+                  : "border-border/40 bg-transparent hover:border-border hover:bg-secondary/50"
+              }`}
+            >
+              <span
+                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-all ${
+                  selected === option
+                    ? "border-foreground bg-foreground"
+                    : "border-muted-foreground/40"
+                }`}
+              >
+                {selected === option && (
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />
+                )}
+              </span>
+              <span className={selected === option ? "font-medium text-foreground" : "text-muted-foreground"}>
                 {option}
-              </Label>
-            </div>
+              </span>
+            </button>
           ))}
-        </RadioGroup>
+        </div>
 
         {selected === "Something else" && (
           <Input
-            placeholder="What topic?"
+            placeholder="What topic should we investigate?"
             value={otherText}
             onChange={(e) => setOtherText(e.target.value)}
-            className="mt-3 font-mono text-sm"
+            className="mt-3 rounded-md border-border/60 font-mono text-sm"
           />
         )}
 
         <Button
           onClick={handleVote}
           disabled={!selected || loading}
-          className="mt-4 font-sans"
+          className="mt-5 w-full rounded-md font-sans text-[13px] font-medium tracking-wide"
         >
           {loading ? "Voting…" : "Vote"}
         </Button>

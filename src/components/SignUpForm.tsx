@@ -16,13 +16,11 @@ const SignUpForm = () => {
     setMessage("");
 
     try {
-      // Subscribe to mailing list
       await supabase.from("subscribers").upsert(
         { email, opted_in: true },
         { onConflict: "email" }
       );
 
-      // Send magic link
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: { emailRedirectTo: window.location.origin },
@@ -39,22 +37,28 @@ const SignUpForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto flex max-w-md gap-2">
-      <Input
-        type="email"
-        placeholder="you@email.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="font-mono text-sm"
-        required
-      />
-      <Button type="submit" disabled={loading} className="whitespace-nowrap font-sans">
-        {loading ? "Sending…" : "Get free access"}
-      </Button>
+    <div className="relative">
+      <form onSubmit={handleSubmit} className="mx-auto flex max-w-md gap-2">
+        <Input
+          type="email"
+          placeholder="you@email.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="rounded-full border-border/60 bg-background/80 font-mono text-sm backdrop-blur-sm"
+          required
+        />
+        <Button
+          type="submit"
+          disabled={loading}
+          className="whitespace-nowrap rounded-full font-sans text-[13px] font-medium tracking-wide"
+        >
+          {loading ? "Sending…" : "Get free access"}
+        </Button>
+      </form>
       {message && (
-        <p className="absolute mt-12 text-sm text-muted-foreground">{message}</p>
+        <p className="mt-3 text-center text-sm text-muted-foreground">{message}</p>
       )}
-    </form>
+    </div>
   );
 };
 
