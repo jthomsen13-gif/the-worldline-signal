@@ -14,7 +14,158 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      convergences: {
+        Row: {
+          created_at: string
+          id: string
+          impact_date: string | null
+          member_forecast_ids: string[] | null
+          probability: number | null
+          summary: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          impact_date?: string | null
+          member_forecast_ids?: string[] | null
+          probability?: number | null
+          summary?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          impact_date?: string | null
+          member_forecast_ids?: string[] | null
+          probability?: number | null
+          summary?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      forecasts: {
+        Row: {
+          chain: Json | null
+          confidence: number
+          created_at: string
+          evidence_links: Json | null
+          falsifiability: string | null
+          headline: string
+          id: string
+          lead_time: string
+          stack_ids: string[] | null
+          status: string
+          trigger: string
+        }
+        Insert: {
+          chain?: Json | null
+          confidence?: number
+          created_at?: string
+          evidence_links?: Json | null
+          falsifiability?: string | null
+          headline: string
+          id?: string
+          lead_time: string
+          stack_ids?: string[] | null
+          status?: string
+          trigger: string
+        }
+        Update: {
+          chain?: Json | null
+          confidence?: number
+          created_at?: string
+          evidence_links?: Json | null
+          falsifiability?: string | null
+          headline?: string
+          id?: string
+          lead_time?: string
+          stack_ids?: string[] | null
+          status?: string
+          trigger?: string
+        }
+        Relationships: []
+      }
+      poll_votes: {
+        Row: {
+          created_at: string
+          id: string
+          option: string
+          other_text: string | null
+          session_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          option: string
+          other_text?: string | null
+          session_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          option?: string
+          other_text?: string | null
+          session_id?: string
+        }
+        Relationships: []
+      }
+      scorecard: {
+        Row: {
+          forecast_id: string
+          id: string
+          outcome: string
+          reasoning: string | null
+          resolved_date: string | null
+        }
+        Insert: {
+          forecast_id: string
+          id?: string
+          outcome: string
+          reasoning?: string | null
+          resolved_date?: string | null
+        }
+        Update: {
+          forecast_id?: string
+          id?: string
+          outcome?: string
+          reasoning?: string | null
+          resolved_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scorecard_forecast_id_fkey"
+            columns: ["forecast_id"]
+            isOneToOne: false
+            referencedRelation: "forecasts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          opted_in: boolean
+          unsubscribe_token: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          opted_in?: boolean
+          unsubscribe_token?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          opted_in?: boolean
+          unsubscribe_token?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
