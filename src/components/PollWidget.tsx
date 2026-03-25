@@ -46,8 +46,8 @@ const PollWidget = () => {
 
   if (hasVoted) {
     return (
-      <section className="mx-auto max-w-6xl px-6 pb-24">
-        <div className="mx-auto max-w-lg rounded-lg border border-border/50 bg-card p-8 text-center shadow-sm">
+      <section className="mx-auto max-w-6xl px-6 pb-28">
+        <div className="mx-auto max-w-lg rounded-lg border border-border bg-card p-8 text-center shadow-sm">
           <p className="font-sans text-sm font-medium text-foreground">
             Thanks for voting.
           </p>
@@ -60,8 +60,8 @@ const PollWidget = () => {
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pb-24">
-      <div className="mx-auto max-w-lg rounded-lg border border-border/50 bg-card p-8 shadow-sm">
+    <section className="mx-auto max-w-6xl px-6 pb-28">
+      <div className="mx-auto max-w-lg rounded-lg border border-border bg-card p-8 shadow-sm">
         <h3 className="font-sans text-base font-bold tracking-tight text-foreground">
           What should we predict next?
         </h3>
@@ -77,7 +77,7 @@ const PollWidget = () => {
               className={`flex w-full items-center gap-3 rounded-md border px-4 py-3 text-left text-[13px] transition-all ${
                 selected === option
                   ? "border-foreground/30 bg-secondary shadow-sm"
-                  : "border-border/40 bg-transparent hover:border-border hover:bg-secondary/50"
+                  : "border-border bg-card hover:border-foreground/20 hover:bg-secondary/50"
               }`}
             >
               <span
@@ -91,7 +91,7 @@ const PollWidget = () => {
                   <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />
                 )}
               </span>
-              <span className={selected === option ? "font-medium text-foreground" : "text-muted-foreground"}>
+              <span className={selected === option ? "font-medium text-foreground" : "text-foreground/70"}>
                 {option}
               </span>
             </button>
@@ -103,7 +103,7 @@ const PollWidget = () => {
             placeholder="What topic should we investigate?"
             value={otherText}
             onChange={(e) => setOtherText(e.target.value)}
-            className="mt-3 rounded-md border-border/60 font-mono text-sm"
+            className="mt-3 rounded-md border-border font-mono text-sm"
           />
         )}
 
