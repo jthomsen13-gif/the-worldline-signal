@@ -7,12 +7,12 @@ const markers = [
 
 const Ticker = () => {
   return (
-    <div className="w-full border-b border-border/40 bg-secondary/50">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-1.5">
+    <div className="w-full border-b border-border/30 bg-secondary/40">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-1">
         {markers.map((m, i) => (
-          <div key={i} className="flex items-center gap-1.5 font-mono text-[10px] tracking-wider uppercase text-muted-foreground">
-            <span className="opacity-50">{m.label}</span>
-            <span className="font-medium text-foreground/70">{m.value}</span>
+          <div key={i} className="flex items-center gap-1.5 font-mono text-[10px] tracking-wider uppercase text-muted-foreground/70">
+            <span>{m.label}</span>
+            <span className="font-medium text-muted-foreground">{m.value}</span>
           </div>
         ))}
       </div>

@@ -5,15 +5,15 @@ import { Button } from "@/components/ui/button";
 import type { User } from "@supabase/supabase-js";
 
 const NAV_LINKS = [
-  { label: "Home", to: "/", auth: false },
-  { label: "Trajectories", to: "/trajectories", auth: true },
-  { label: "Archive", to: "/archive", auth: true },
-  { label: "Convergences", to: "/convergences", auth: true },
-  { label: "Scorecard", to: "/scorecard", auth: true },
-  { label: "Method", to: "/method", auth: false },
-  { label: "About", to: "/about", auth: false },
-  { label: "Depot", to: "/depot", auth: false },
-  { label: "Contact", to: "/contact", auth: false },
+  { label: "Home", to: "/" },
+  { label: "Trajectories", to: "/trajectories" },
+  { label: "Convergences", to: "/convergences" },
+  { label: "Scorecard", to: "/scorecard" },
+  { label: "Archive", to: "/archive" },
+  { label: "Method", to: "/method" },
+  { label: "About", to: "/about" },
+  { label: "Depot", to: "/depot" },
+  { label: "Contact", to: "/contact" },
 ];
 
 const Navbar = () => {
@@ -36,19 +36,16 @@ const Navbar = () => {
     setUser(null);
   };
 
-  const visibleLinks = NAV_LINKS.filter((l) => !l.auth || user);
-
   return (
     <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-        {/* Logo / wordmark */}
         <Link to="/" className="font-sans text-sm font-bold uppercase tracking-[0.2em] text-foreground">
           Worldline
         </Link>
 
         {/* Desktop links */}
         <div className="hidden items-center gap-1 md:flex">
-          {visibleLinks.map((l) => (
+          {NAV_LINKS.map((l) => (
             <Link
               key={l.to}
               to={l.to}
@@ -102,7 +99,7 @@ const Navbar = () => {
       {/* Mobile menu */}
       {menuOpen && (
         <div className="border-t border-border/40 bg-background px-6 pb-4 pt-2 md:hidden">
-          {visibleLinks.map((l) => (
+          {NAV_LINKS.map((l) => (
             <Link
               key={l.to}
               to={l.to}

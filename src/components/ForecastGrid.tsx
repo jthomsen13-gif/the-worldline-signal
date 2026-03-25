@@ -143,31 +143,31 @@ const ForecastCard = ({
 }) => (
   <button
     onClick={() => onClick(forecast)}
-    className="group w-full rounded-lg border border-border/50 bg-card p-6 text-left shadow-sm transition-all duration-200 hover:border-border hover:shadow-md"
+    className="group w-full rounded-lg border border-border bg-card p-6 text-left shadow-sm transition-all duration-200 hover:shadow-md"
   >
-    <h3 className="font-sans text-[15px] font-semibold leading-snug text-foreground group-hover:text-foreground/90">
+    <h3 className="font-sans text-[15px] font-semibold leading-snug text-foreground">
       {forecast.headline}
     </h3>
     <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{forecast.trigger}</p>
     <div className="mt-4 flex items-center justify-between">
-      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70">
+      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
         Lead: {forecast.lead_time}
       </span>
-      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70">
+      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
         {forecast.confidence}%
       </span>
     </div>
-    <div className="mt-2 h-[3px] w-full overflow-hidden rounded-full bg-muted/60">
+    <div className="mt-2 h-[3px] w-full overflow-hidden rounded-full bg-muted">
       <div
-        className="h-full rounded-full bg-foreground/25 transition-all duration-500"
+        className="h-full rounded-full bg-accent transition-all duration-500"
         style={{ width: `${forecast.confidence}%` }}
       />
     </div>
     <div className="mt-4 flex items-center gap-1">
-      <span className="font-mono text-[11px] tracking-wide text-muted-foreground transition-colors group-hover:text-foreground">
+      <span className="font-mono text-[11px] tracking-wide text-accent transition-colors group-hover:text-foreground">
         See evidence
       </span>
-      <span className="text-[11px] text-muted-foreground transition-transform group-hover:translate-x-0.5">
+      <span className="text-[11px] text-accent transition-transform group-hover:translate-x-0.5">
         →
       </span>
     </div>
@@ -201,14 +201,14 @@ const ForecastDrawer = ({
             <h4 className="font-sans text-sm font-bold uppercase tracking-wide text-muted-foreground">
               Full Prediction
             </h4>
-            <p className="mt-1 text-[15px] leading-relaxed">{forecast.prediction}</p>
+            <p className="mt-1 text-[15px] leading-relaxed text-foreground">{forecast.prediction}</p>
           </div>
 
           <div>
             <h4 className="font-sans text-sm font-bold uppercase tracking-wide text-muted-foreground">
               Trajectory
             </h4>
-            <span className="mt-1 inline-block rounded-full border border-border/50 bg-secondary px-3 py-0.5 font-mono text-[11px] text-muted-foreground">
+            <span className="mt-1 inline-block rounded-full border border-border bg-secondary px-3 py-0.5 font-mono text-[11px] text-foreground">
               {forecast.trajectory}
             </span>
           </div>
@@ -217,7 +217,7 @@ const ForecastDrawer = ({
             <h4 className="font-sans text-sm font-bold uppercase tracking-wide text-muted-foreground">
               Key Evidence
             </h4>
-            <p className="mt-1 text-[14px] leading-relaxed text-foreground/80">
+            <p className="mt-1 text-[14px] leading-relaxed text-foreground">
               {forecast.evidence}
             </p>
           </div>
@@ -226,14 +226,14 @@ const ForecastDrawer = ({
             <h4 className="font-sans text-sm font-bold uppercase tracking-wide text-muted-foreground">
               Falsifiability
             </h4>
-            <p className="mt-1 text-[14px] italic leading-relaxed text-foreground/80">
+            <p className="mt-1 text-[14px] italic leading-relaxed text-foreground">
               {forecast.falsifiability}
             </p>
           </div>
 
           {forecast.convergence && (
             <div className="rounded-md border border-border bg-secondary px-4 py-3">
-              <span className="font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
+              <span className="font-mono text-[11px] uppercase tracking-wide text-foreground">
                 {forecast.convergence}
               </span>
             </div>
@@ -256,13 +256,13 @@ const TimeSection = ({
   onCardClick: (f: PlaceholderForecast) => void;
 }) => (
   <div>
-    <div className="mb-6 border-b border-border/40 pb-3">
+    <div className="mb-8 border-b border-border pb-3">
       <h2 className="font-sans text-lg font-bold tracking-tight text-foreground">{title}</h2>
       <p className="mt-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
         {subtitle}
       </p>
     </div>
-    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {forecasts.map((f) => (
         <ForecastCard key={f.id} forecast={f} onClick={onCardClick} />
       ))}
@@ -275,10 +275,10 @@ const ForecastGrid = () => {
 
   return (
     <>
-      <section className="mx-auto max-w-6xl space-y-16 px-6 pb-20 pt-4">
+      <section className="mx-auto max-w-6xl space-y-20 px-6 pb-28 pt-8">
         {/* What We Do */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[15px] leading-relaxed text-foreground/80">
+          <p className="text-[15px] leading-relaxed text-foreground">
             We track 7 trajectories — Energy, Military, Space, Food &amp; Agri, Economy, Politics,
             Narratives. Surface evidence gaps. Analyse convergences. Publish what's coming.
           </p>
