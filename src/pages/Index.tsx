@@ -3,6 +3,7 @@ import Ticker from "@/components/Ticker";
 import Hero from "@/components/Hero";
 import ForecastGrid from "@/components/ForecastGrid";
 import PollWidget from "@/components/PollWidget";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <Hero />
       <ForecastGrid />
       <PollWidget />
+      <Footer />
     </div>
   );
 };
