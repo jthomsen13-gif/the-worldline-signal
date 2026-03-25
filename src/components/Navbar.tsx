@@ -7,6 +7,7 @@ import type { User } from "@supabase/supabase-js";
 const NAV_LINKS = [
   { label: "Home", to: "/", auth: false },
   { label: "Trajectories", to: "/trajectories", auth: true },
+  { label: "Archive", to: "/archive", auth: true },
   { label: "Convergences", to: "/convergences", auth: true },
   { label: "Scorecard", to: "/scorecard", auth: true },
   { label: "Method", to: "/method", auth: false },
