@@ -19,7 +19,7 @@ const Hero = () => {
           Worldline Engine
         </h1>
         <p className="mt-3 text-lg italic text-foreground/80 md:text-xl">
-          What's coming, before it arrives.
+          What's changing in energy, politics and supply chains — and what it means for you.
         </p>
         <p className="mt-5 text-[15px] leading-relaxed text-foreground/70">
           Evidence-based predictions. Public scorecard.
