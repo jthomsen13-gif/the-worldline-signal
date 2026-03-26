@@ -51,6 +51,21 @@ const SHORT_TERM: PlaceholderForecast[] = [
       "Wrong if Iran deal signed or OPEC+ significantly increases output before May 2026.",
     convergence: "Part of Winter 2026 Squeeze — coming soon.",
   },
+  {
+    id: "s3",
+    headline: "Energy price spike",
+    trigger: "Physical supply constraints pushing household and business costs higher",
+    lead_time: "0–1 month",
+    confidence: 80,
+    trajectory: "Energy",
+    prediction:
+      "Physical supply constraints pushing household and business costs higher. Watch window: April 2026.",
+    evidence:
+      "Supply disruptions across multiple channels. See Energy trajectory.",
+    falsifiability:
+      "Wrong if supply constraints ease before April 2026.",
+    convergence: "",
+  },
 ];
 
 const MEDIUM_TERM: PlaceholderForecast[] = [
