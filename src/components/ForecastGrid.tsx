@@ -306,14 +306,6 @@ const ForecastGrid = () => {
   return (
     <>
       <section className="space-y-20 pb-28 pt-8">
-        {/* What We Do */}
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[15px] leading-relaxed text-foreground">
-            We track 7 trajectories — Energy, Military, Space, Food &amp; Agri, Economy, Politics,
-            Narratives. Surface evidence gaps. Analyse convergences. Publish what's coming.
-          </p>
-        </div>
-
         <TimeSection
           title="Short-term"
           subtitle="0–3 months"
