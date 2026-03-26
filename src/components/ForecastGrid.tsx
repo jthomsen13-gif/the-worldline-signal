@@ -99,6 +99,21 @@ const MEDIUM_TERM: PlaceholderForecast[] = [
       "Wrong if institutional landlords fill the gap quickly or act is delayed.",
     convergence: "",
   },
+  {
+    id: "m3",
+    headline: "Food supply pressure",
+    trigger: "Fertilizer shortages and shipping disruption converging",
+    lead_time: "3–6 months",
+    confidence: 75,
+    trajectory: "Food & Agri",
+    prediction:
+      "Fertilizer shortages and shipping disruption converging. Summer 2026.",
+    evidence:
+      "Fertilizer prices rising. Shipping routes under pressure. See Food & Agri trajectory.",
+    falsifiability:
+      "Wrong if fertilizer supply normalises or shipping disruption resolves before summer 2026.",
+    convergence: "",
+  },
 ];
 
 const LONG_TERM: PlaceholderForecast[] = [
