@@ -5,6 +5,7 @@ import InfoBoxes from "@/components/InfoBoxes";
 import ForecastGrid from "@/components/ForecastGrid";
 import PollWidget from "@/components/PollWidget";
 import Footer from "@/components/Footer";
+import AboutInstrument from "@/components/AboutInstrument";
 
 const Index = () => {
   return (
