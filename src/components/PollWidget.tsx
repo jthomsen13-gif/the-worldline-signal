@@ -13,7 +13,7 @@ const POLL_OPTIONS = [
 
 const SESSION_KEY = "worldline_poll_voted";
 
-const PollWidget = () => {
+const PollWidget = ({ sidebar = false }: { sidebar?: boolean }) => {
   const [selected, setSelected] = useState("");
   const [otherText, setOtherText] = useState("");
   const [hasVoted, setHasVoted] = useState(false);
