@@ -23,7 +23,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  if (user === undefined) {
+  if (!isReady) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <p className="font-mono text-sm text-muted-foreground">Loading…</p>

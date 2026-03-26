@@ -275,7 +275,7 @@ const ForecastGrid = () => {
 
   return (
     <>
-      <section className="mx-auto max-w-6xl space-y-20 px-6 pb-28 pt-8">
+      <section className="space-y-20 pb-28 pt-8">
         {/* What We Do */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-[15px] leading-relaxed text-foreground">

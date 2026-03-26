@@ -60,7 +60,7 @@ const PollWidget = ({ sidebar = false }: { sidebar?: boolean }) => {
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pb-28">
+    <section className={sidebar ? "" : "mx-auto max-w-6xl px-6 pb-28"}>
       <div className="mx-auto max-w-lg rounded-lg border border-border bg-card p-8 shadow-sm">
         <h3 className="font-sans text-base font-bold tracking-tight text-foreground">
           What should we predict next?
