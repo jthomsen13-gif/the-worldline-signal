@@ -32,6 +32,7 @@ const Index = () => {
         </div>
       </div>
 
+      <AboutInstrument />
       <Footer />
     </div>
   );
