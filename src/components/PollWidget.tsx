@@ -13,7 +13,7 @@ const POLL_OPTIONS = [
 
 const SESSION_KEY = "worldline_poll_voted";
 
-const PollWidget = () => {
+const PollWidget = ({ sidebar = false }: { sidebar?: boolean }) => {
   const [selected, setSelected] = useState("");
   const [otherText, setOtherText] = useState("");
   const [hasVoted, setHasVoted] = useState(false);
@@ -46,7 +46,7 @@ const PollWidget = () => {
 
   if (hasVoted) {
     return (
-      <section className="mx-auto max-w-6xl px-6 pb-28">
+      <section className={sidebar ? "" : "mx-auto max-w-6xl px-6 pb-28"}>
         <div className="mx-auto max-w-lg rounded-lg border border-border bg-card p-8 text-center shadow-sm">
           <p className="font-sans text-sm font-medium text-foreground">
             Thanks for voting.
@@ -60,7 +60,7 @@ const PollWidget = () => {
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pb-28">
+    <section className={sidebar ? "" : "mx-auto max-w-6xl px-6 pb-28"}>
       <div className="mx-auto max-w-lg rounded-lg border border-border bg-card p-8 shadow-sm">
         <h3 className="font-sans text-base font-bold tracking-tight text-foreground">
           What should we predict next?
