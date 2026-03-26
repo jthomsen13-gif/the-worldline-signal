@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    // Restore session from storage FIRST, then mark ready
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setIsReady(true);
+    });
+
+    // Listen for subsequent auth changes (sign-in via magic link, sign-out)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => setUser(session?.user ?? null)
-    );
-    supabase.auth.getSession().then(({ data: { session } }) =>
-      setUser(session?.user ?? null)
+      (_event, session) => {
+        setUser(session?.user ?? null);
+        if (!isReady) setIsReady(true);
+      }
     );
     return () => subscription.unsubscribe();
   }, []);
