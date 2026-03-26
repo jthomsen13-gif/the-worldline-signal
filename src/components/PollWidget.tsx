@@ -46,7 +46,7 @@ const PollWidget = ({ sidebar = false }: { sidebar?: boolean }) => {
 
   if (hasVoted) {
     return (
-      <section className="mx-auto max-w-6xl px-6 pb-28">
+      <section className={sidebar ? "" : "mx-auto max-w-6xl px-6 pb-28"}>
         <div className="mx-auto max-w-lg rounded-lg border border-border bg-card p-8 text-center shadow-sm">
           <p className="font-sans text-sm font-medium text-foreground">
             Thanks for voting.
