@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      checkpoints: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          description: string | null
+          id: string
+          status: string
+          title: string
+          window_end: string | null
+          window_start: string | null
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          status?: string
+          title: string
+          window_end?: string | null
+          window_start?: string | null
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          status?: string
+          title?: string
+          window_end?: string | null
+          window_start?: string | null
+        }
+        Relationships: []
+      }
       convergences: {
         Row: {
           created_at: string
@@ -163,6 +196,24 @@ export type Database = {
           id?: string
           opted_in?: boolean
           unsubscribe_token?: string
+        }
+        Relationships: []
+      }
+      updates: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
         }
         Relationships: []
       }
