@@ -124,6 +124,7 @@ const Trajectories = () => (
                 </div>
               </div>
             </div>
+            </div>
           </section>
         ))}
       </div>
