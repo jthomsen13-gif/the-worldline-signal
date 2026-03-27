@@ -73,11 +73,21 @@ const Trajectories = () => (
 
       <div className="mt-14 space-y-14">
         {trajectories.map((t) => (
-          <section key={t.name} className="rounded-lg border border-border/50 bg-card p-8 shadow-sm">
-            <h2 className="font-sans text-xl font-bold tracking-tight text-foreground">
-              {t.name}
-            </h2>
-            <p className="mt-2 text-[15px] leading-relaxed text-foreground/80">{t.desc}</p>
+          <section key={t.name} className="overflow-hidden rounded-lg border border-border/50 bg-card shadow-sm">
+            <div className="relative h-40 w-full overflow-hidden">
+              <img
+                src={t.image}
+                alt={t.name}
+                className="h-full w-full object-cover brightness-[0.6] saturate-[0.3]"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+              <h2 className="absolute bottom-4 left-6 font-sans text-xl font-bold tracking-tight text-white">
+                {t.name}
+              </h2>
+            </div>
+            <div className="p-8 pt-4">
+            <p className="text-[15px] leading-relaxed text-foreground/80">{t.desc}</p>
 
             <div className="mt-6 space-y-4">
               <div>
