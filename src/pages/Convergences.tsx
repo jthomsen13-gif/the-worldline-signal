@@ -27,23 +27,36 @@ const Convergences = () => (
         {convergences.map((c) => (
           <div
             key={c.title}
-            className="rounded-lg border border-border/50 bg-card p-8 shadow-sm"
+            className="overflow-hidden rounded-lg border border-border/50 bg-card shadow-sm"
           >
-            <h3 className="font-sans text-lg font-bold text-foreground">{c.title}</h3>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {c.trajectories.map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-border/50 bg-secondary px-3 py-0.5 font-mono text-[11px] text-muted-foreground"
-                >
-                  {t}
-                </span>
-              ))}
+            <div className="relative h-36 w-full overflow-hidden">
+              <img
+                src={c.image}
+                alt={c.title}
+                className="h-full w-full object-cover brightness-[0.6] saturate-[0.3]"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+              <h3 className="absolute bottom-3 left-5 font-sans text-lg font-bold text-white">
+                {c.title}
+              </h3>
             </div>
-            <p className="mt-4 text-[14px] leading-relaxed text-foreground/80">{c.summary}</p>
-            <p className="mt-4 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-              Timeline: {c.timeline}
-            </p>
+            <div className="p-6">
+              <div className="flex flex-wrap gap-2">
+                {c.trajectories.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-border/50 bg-secondary px-3 py-0.5 font-mono text-[11px] text-muted-foreground"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-4 text-[14px] leading-relaxed text-foreground/80">{c.summary}</p>
+              <p className="mt-4 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                Timeline: {c.timeline}
+              </p>
+            </div>
           </div>
         ))}
       </div>
