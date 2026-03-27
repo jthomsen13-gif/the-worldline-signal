@@ -143,6 +143,57 @@ export type Database = {
         }
         Relationships: []
       }
+      predictions: {
+        Row: {
+          confidence: number
+          convergence_id: string | null
+          created_at: string
+          evidence_summary: string | null
+          falsifiability: string | null
+          full_text: string | null
+          headline: string
+          id: string
+          lead_time: string | null
+          resolved_at: string | null
+          resolved_outcome: string | null
+          status: string
+          timeframe: string
+          trajectory: string
+        }
+        Insert: {
+          confidence?: number
+          convergence_id?: string | null
+          created_at?: string
+          evidence_summary?: string | null
+          falsifiability?: string | null
+          full_text?: string | null
+          headline: string
+          id?: string
+          lead_time?: string | null
+          resolved_at?: string | null
+          resolved_outcome?: string | null
+          status?: string
+          timeframe?: string
+          trajectory: string
+        }
+        Update: {
+          confidence?: number
+          convergence_id?: string | null
+          created_at?: string
+          evidence_summary?: string | null
+          falsifiability?: string | null
+          full_text?: string | null
+          headline?: string
+          id?: string
+          lead_time?: string | null
+          resolved_at?: string | null
+          resolved_outcome?: string | null
+          status?: string
+          timeframe?: string
+          trajectory?: string
+        }
+        Relationships: []
+      }
       scorecard: {
         Row: {
           forecast_id: string

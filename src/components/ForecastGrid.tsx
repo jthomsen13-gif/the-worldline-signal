@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Sheet,
   SheetContent,
@@ -7,169 +9,112 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 
-interface PlaceholderForecast {
+interface Prediction {
   id: string;
   headline: string;
-  trigger: string;
-  lead_time: string;
-  confidence: number;
+  full_text: string | null;
   trajectory: string;
-  prediction: string;
-  evidence: string;
-  falsifiability: string;
-  convergence: string;
+  timeframe: string;
+  lead_time: string | null;
+  confidence: number;
+  evidence_summary: string | null;
+  falsifiability: string | null;
+  convergence_id: string | null;
+  status: string;
+  created_at: string;
 }
 
-const SHORT_TERM: PlaceholderForecast[] = [
+/* ── Hardcoded fallbacks (shown when DB is empty) ── */
+
+const SHORT_TERM_FALLBACK: Prediction[] = [
   {
-    id: "s1",
-    headline: "UK gas bills hit new floor after Qatar LNG strike",
-    trigger: "Qatar LNG strike removes 17% of global supply",
-    lead_time: "0–3 months",
-    confidence: 82,
-    trajectory: "Energy",
-    prediction:
-      "Gas bills hit new floor. Qatar LNG strike removes 17% of global supply. UK prices will rise permanently within 3 months.",
-    evidence:
-      "Qatar supplies 17% of global LNG. UK imports significant share. Supply shock not recoverable quickly. See Trajectories page for full research.",
-    falsifiability:
-      "This would be wrong if new supply agreements signed before July 2026 or major producers increase output.",
-    convergence: "Part of Winter 2026 Squeeze — coming soon.",
+    id: "s1", headline: "UK gas bills hit new floor after Qatar LNG strike",
+    full_text: "Gas bills hit new floor. Qatar LNG strike removes 17% of global supply. UK prices will rise permanently within 3 months.",
+    trajectory: "Energy", timeframe: "short", lead_time: "0–3 months", confidence: 82,
+    evidence_summary: "Qatar supplies 17% of global LNG. UK imports significant share. Supply shock not recoverable quickly. See Trajectories page for full research.",
+    falsifiability: "This would be wrong if new supply agreements signed before July 2026 or major producers increase output.",
+    convergence_id: null, status: "active", created_at: "",
   },
   {
-    id: "s2",
-    headline: "Petrol floor settles above £1.80/litre",
-    trigger: "Iran escalation + refinery margins",
-    lead_time: "1–2 months",
-    confidence: 75,
-    trajectory: "Economy",
-    prediction:
-      "Petrol prices won't return below £1.80. Iran risk premium baked in. Refinery margins widening.",
-    evidence:
-      "Iran tensions. Refinery capacity constraints. Demand stable. See Economy trajectory.",
-    falsifiability:
-      "Wrong if Iran deal signed or OPEC+ significantly increases output before May 2026.",
-    convergence: "Part of Winter 2026 Squeeze — coming soon.",
+    id: "s2", headline: "Petrol floor settles above £1.80/litre",
+    full_text: "Petrol prices won't return below £1.80. Iran risk premium baked in. Refinery margins widening.",
+    trajectory: "Economy", timeframe: "short", lead_time: "1–2 months", confidence: 75,
+    evidence_summary: "Iran tensions. Refinery capacity constraints. Demand stable. See Economy trajectory.",
+    falsifiability: "Wrong if Iran deal signed or OPEC+ significantly increases output before May 2026.",
+    convergence_id: null, status: "active", created_at: "",
   },
   {
-    id: "s3",
-    headline: "Energy price spike",
-    trigger: "Physical supply constraints pushing household and business costs higher",
-    lead_time: "0–1 month",
-    confidence: 80,
-    trajectory: "Energy",
-    prediction:
-      "Physical supply constraints pushing household and business costs higher. Watch window: April 2026.",
-    evidence:
-      "Supply disruptions across multiple channels. See Energy trajectory.",
-    falsifiability:
-      "Wrong if supply constraints ease before April 2026.",
-    convergence: "",
+    id: "s3", headline: "Energy price spike",
+    full_text: "Physical supply constraints pushing household and business costs higher. Watch window: April 2026.",
+    trajectory: "Energy", timeframe: "short", lead_time: "0–1 month", confidence: 80,
+    evidence_summary: "Supply disruptions across multiple channels. See Energy trajectory.",
+    falsifiability: "Wrong if supply constraints ease before April 2026.",
+    convergence_id: null, status: "active", created_at: "",
   },
 ];
 
-const MEDIUM_TERM: PlaceholderForecast[] = [
+const MEDIUM_TERM_FALLBACK: Prediction[] = [
   {
-    id: "m1",
-    headline: "Fertilizer prices force UK food price spike",
-    trigger: "Fertilizer costs up 29%, pass-through to supermarkets",
-    lead_time: "3–6 months",
-    confidence: 71,
-    trajectory: "Food & Agri",
-    prediction:
-      "Fertilizer price surge flows through to bread, meat, dairy. UK food inflation re-accelerates by Q3 2026.",
-    evidence:
-      "Fertilizer prices up 29% March 2026. UK farming heavily dependent on imports. See Food & Agri trajectory.",
-    falsifiability:
-      "Wrong if government subsidies cover the gap or global fertilizer prices correct sharply.",
-    convergence: "Part of Winter 2026 Squeeze — coming soon.",
+    id: "m1", headline: "Fertilizer prices force UK food price spike",
+    full_text: "Fertilizer price surge flows through to bread, meat, dairy. UK food inflation re-accelerates by Q3 2026.",
+    trajectory: "Food & Agri", timeframe: "medium", lead_time: "3–6 months", confidence: 71,
+    evidence_summary: "Fertilizer prices up 29% March 2026. UK farming heavily dependent on imports. See Food & Agri trajectory.",
+    falsifiability: "Wrong if government subsidies cover the gap or global fertilizer prices correct sharply.",
+    convergence_id: null, status: "active", created_at: "",
   },
   {
-    id: "m2",
-    headline: "Landlord sell-off accelerates after Renters' Rights Act",
-    trigger: "Renters' Rights Act takes effect May 1",
-    lead_time: "3–9 months",
-    confidence: 65,
-    trajectory: "Economy",
-    prediction:
-      "Small landlords exit market. Rental supply drops. Rents increase further despite regulation.",
-    evidence:
-      "Renters' Rights Act May 1. Landlord sentiment surveys negative. See Economy trajectory.",
-    falsifiability:
-      "Wrong if institutional landlords fill the gap quickly or act is delayed.",
-    convergence: "",
+    id: "m2", headline: "Landlord sell-off accelerates after Renters' Rights Act",
+    full_text: "Small landlords exit market. Rental supply drops. Rents increase further despite regulation.",
+    trajectory: "Economy", timeframe: "medium", lead_time: "3–9 months", confidence: 65,
+    evidence_summary: "Renters' Rights Act May 1. Landlord sentiment surveys negative. See Economy trajectory.",
+    falsifiability: "Wrong if institutional landlords fill the gap quickly or act is delayed.",
+    convergence_id: null, status: "active", created_at: "",
   },
   {
-    id: "m3",
-    headline: "Food supply pressure",
-    trigger: "Fertilizer shortages and shipping disruption converging",
-    lead_time: "3–6 months",
-    confidence: 75,
-    trajectory: "Food & Agri",
-    prediction:
-      "Fertilizer shortages and shipping disruption converging. Summer 2026.",
-    evidence:
-      "Fertilizer prices rising. Shipping routes under pressure. See Food & Agri trajectory.",
-    falsifiability:
-      "Wrong if fertilizer supply normalises or shipping disruption resolves before summer 2026.",
-    convergence: "",
+    id: "m3", headline: "Food supply pressure",
+    full_text: "Fertilizer shortages and shipping disruption converging. Summer 2026.",
+    trajectory: "Food & Agri", timeframe: "medium", lead_time: "3–6 months", confidence: 75,
+    evidence_summary: "Fertilizer prices rising. Shipping routes under pressure. See Food & Agri trajectory.",
+    falsifiability: "Wrong if fertilizer supply normalises or shipping disruption resolves before summer 2026.",
+    convergence_id: null, status: "active", created_at: "",
   },
 ];
 
-const LONG_TERM: PlaceholderForecast[] = [
+const LONG_TERM_FALLBACK: Prediction[] = [
   {
-    id: "l1",
-    headline: "Cost-of-living crisis by autumn 2026",
-    trigger: "Energy + food + rent converge",
-    lead_time: "12+ months",
-    confidence: 68,
-    trajectory: "Convergence",
-    prediction:
-      "Gas, food, and rent all rising simultaneously. Sustained inflation. Real wages fall. Second cost-of-living crisis by October 2026.",
-    evidence:
-      "Energy, Food & Agri, Economy trajectories all pointing same direction. See Convergences page.",
-    falsifiability:
-      "Wrong if Bank of England cuts aggressively and supply shocks resolve by summer 2026.",
-    convergence: "This IS the Winter 2026 Squeeze.",
+    id: "l1", headline: "Cost-of-living crisis by autumn 2026",
+    full_text: "Gas, food, and rent all rising simultaneously. Sustained inflation. Real wages fall. Second cost-of-living crisis by October 2026.",
+    trajectory: "Convergence", timeframe: "long", lead_time: "12+ months", confidence: 68,
+    evidence_summary: "Energy, Food & Agri, Economy trajectories all pointing same direction. See Convergences page.",
+    falsifiability: "Wrong if Bank of England cuts aggressively and supply shocks resolve by summer 2026.",
+    convergence_id: null, status: "active", created_at: "",
   },
   {
-    id: "l2",
-    headline: "Solar storm disrupts UK grid infrastructure",
-    trigger: "G3+ solar event during peak demand",
-    lead_time: "12–24 months",
-    confidence: 45,
-    trajectory: "Space",
-    prediction:
-      "Major solar event causes grid stress. Satellite disruption. GPS unreliability. Cascading infrastructure effects.",
-    evidence:
-      "G3 solar storm March 2026 was a warning shot. Solar cycle 25 peaking. See Space trajectory.",
-    falsifiability:
-      "Wrong if solar cycle 25 declines faster than expected or grid hardening completed.",
-    convergence: "",
+    id: "l2", headline: "Solar storm disrupts UK grid infrastructure",
+    full_text: "Major solar event causes grid stress. Satellite disruption. GPS unreliability. Cascading infrastructure effects.",
+    trajectory: "Space", timeframe: "long", lead_time: "12–24 months", confidence: 45,
+    evidence_summary: "G3 solar storm March 2026 was a warning shot. Solar cycle 25 peaking. See Space trajectory.",
+    falsifiability: "Wrong if solar cycle 25 declines faster than expected or grid hardening completed.",
+    convergence_id: null, status: "active", created_at: "",
   },
   {
-    id: "l3",
-    headline: "Public trust in institutions drops below 20%",
-    trigger: "Epstein files + institutional silence",
-    lead_time: "12–18 months",
-    confidence: 55,
-    trajectory: "Politics",
-    prediction:
-      "3 million Epstein files released. Resignations follow. Public trust in institutions reaches historic lows.",
-    evidence:
-      "Files released March 2026. Lord Mandelson resigned. Belgium Article 4 withdrawn. See Politics trajectory.",
-    falsifiability:
-      "Wrong if files lead to prosecutions and institutional accountability is seen to work.",
-    convergence: "",
+    id: "l3", headline: "Public trust in institutions drops below 20%",
+    full_text: "3 million Epstein files released. Resignations follow. Public trust in institutions reaches historic lows.",
+    trajectory: "Politics", timeframe: "long", lead_time: "12–18 months", confidence: 55,
+    evidence_summary: "Files released March 2026. Lord Mandelson resigned. Belgium Article 4 withdrawn. See Politics trajectory.",
+    falsifiability: "Wrong if files lead to prosecutions and institutional accountability is seen to work.",
+    convergence_id: null, status: "active", created_at: "",
   },
 ];
+
+/* ── Sub-components ── */
 
 const ForecastCard = ({
   forecast,
   onClick,
 }: {
-  forecast: PlaceholderForecast;
-  onClick: (f: PlaceholderForecast) => void;
+  forecast: Prediction;
+  onClick: (f: Prediction) => void;
 }) => (
   <button
     onClick={() => onClick(forecast)}
@@ -178,7 +123,9 @@ const ForecastCard = ({
     <h3 className="font-sans text-[15px] font-semibold leading-snug text-foreground">
       {forecast.headline}
     </h3>
-    <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{forecast.trigger}</p>
+    <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+      {forecast.full_text?.slice(0, 120) ?? ""}
+    </p>
     <div className="mt-4 flex items-center justify-between">
       <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
         Lead: {forecast.lead_time}
@@ -209,7 +156,7 @@ const ForecastDrawer = ({
   open,
   onClose,
 }: {
-  forecast: PlaceholderForecast | null;
+  forecast: Prediction | null;
   open: boolean;
   onClose: () => void;
 }) => {
@@ -231,7 +178,7 @@ const ForecastDrawer = ({
             <h4 className="font-sans text-sm font-bold uppercase tracking-wide text-muted-foreground">
               Full Prediction
             </h4>
-            <p className="mt-1 text-[15px] leading-relaxed text-foreground">{forecast.prediction}</p>
+            <p className="mt-1 text-[15px] leading-relaxed text-foreground">{forecast.full_text}</p>
           </div>
 
           <div>
@@ -243,28 +190,32 @@ const ForecastDrawer = ({
             </span>
           </div>
 
-          <div>
-            <h4 className="font-sans text-sm font-bold uppercase tracking-wide text-muted-foreground">
-              Key Evidence
-            </h4>
-            <p className="mt-1 text-[14px] leading-relaxed text-foreground">
-              {forecast.evidence}
-            </p>
-          </div>
+          {forecast.evidence_summary && (
+            <div>
+              <h4 className="font-sans text-sm font-bold uppercase tracking-wide text-muted-foreground">
+                Key Evidence
+              </h4>
+              <p className="mt-1 text-[14px] leading-relaxed text-foreground">
+                {forecast.evidence_summary}
+              </p>
+            </div>
+          )}
 
-          <div>
-            <h4 className="font-sans text-sm font-bold uppercase tracking-wide text-muted-foreground">
-              Falsifiability
-            </h4>
-            <p className="mt-1 text-[14px] italic leading-relaxed text-foreground">
-              {forecast.falsifiability}
-            </p>
-          </div>
+          {forecast.falsifiability && (
+            <div>
+              <h4 className="font-sans text-sm font-bold uppercase tracking-wide text-muted-foreground">
+                Falsifiability
+              </h4>
+              <p className="mt-1 text-[14px] italic leading-relaxed text-foreground">
+                This is wrong if: {forecast.falsifiability}
+              </p>
+            </div>
+          )}
 
-          {forecast.convergence && (
+          {forecast.convergence_id && (
             <div className="rounded-md border border-border bg-secondary px-4 py-3">
               <span className="font-mono text-[11px] uppercase tracking-wide text-foreground">
-                {forecast.convergence}
+                Part of a Convergence Report
               </span>
             </div>
           )}
@@ -282,8 +233,8 @@ const TimeSection = ({
 }: {
   title: string;
   subtitle: string;
-  forecasts: PlaceholderForecast[];
-  onCardClick: (f: PlaceholderForecast) => void;
+  forecasts: Prediction[];
+  onCardClick: (f: Prediction) => void;
 }) => (
   <div>
     <div className="mb-8 border-b border-border pb-3">
@@ -300,30 +251,63 @@ const TimeSection = ({
   </div>
 );
 
+/* ── Main grid ── */
+
 const ForecastGrid = () => {
-  const [selected, setSelected] = useState<PlaceholderForecast | null>(null);
+  const [selected, setSelected] = useState<Prediction | null>(null);
+
+  const { data: dbPredictions } = useQuery({
+    queryKey: ["predictions-active"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("predictions")
+        .select("*")
+        .eq("status", "active")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data as Prediction[];
+    },
+  });
+
+  const hasDb = dbPredictions && dbPredictions.length > 0;
+
+  const shortTerm = hasDb
+    ? dbPredictions.filter((p) => p.timeframe === "short")
+    : SHORT_TERM_FALLBACK;
+  const mediumTerm = hasDb
+    ? dbPredictions.filter((p) => p.timeframe === "medium")
+    : MEDIUM_TERM_FALLBACK;
+  const longTerm = hasDb
+    ? dbPredictions.filter((p) => p.timeframe === "long")
+    : LONG_TERM_FALLBACK;
 
   return (
     <>
       <section className="space-y-20 pb-28 pt-8">
-        <TimeSection
-          title="Short-term"
-          subtitle="0–3 months"
-          forecasts={SHORT_TERM}
-          onCardClick={setSelected}
-        />
-        <TimeSection
-          title="Medium-term"
-          subtitle="3–12 months"
-          forecasts={MEDIUM_TERM}
-          onCardClick={setSelected}
-        />
-        <TimeSection
-          title="Long-term"
-          subtitle="12+ months"
-          forecasts={LONG_TERM}
-          onCardClick={setSelected}
-        />
+        {shortTerm.length > 0 && (
+          <TimeSection
+            title="Short-term"
+            subtitle="0–3 months"
+            forecasts={shortTerm}
+            onCardClick={setSelected}
+          />
+        )}
+        {mediumTerm.length > 0 && (
+          <TimeSection
+            title="Medium-term"
+            subtitle="3–12 months"
+            forecasts={mediumTerm}
+            onCardClick={setSelected}
+          />
+        )}
+        {longTerm.length > 0 && (
+          <TimeSection
+            title="Long-term"
+            subtitle="12+ months"
+            forecasts={longTerm}
+            onCardClick={setSelected}
+          />
+        )}
       </section>
 
       <ForecastDrawer
