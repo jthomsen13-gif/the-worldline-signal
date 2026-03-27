@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Ticker from "@/components/Ticker";
 import Hero from "@/components/Hero";
+import LatestUpdate from "@/components/LatestUpdate";
 import InfoBoxes from "@/components/InfoBoxes";
 import ForecastGrid from "@/components/ForecastGrid";
 import PollWidget from "@/components/PollWidget";
@@ -13,6 +14,7 @@ const Index = () => {
       <Navbar />
       <Ticker />
       <Hero />
+      <LatestUpdate />
       <InfoBoxes />
 
       {/* Main content: predictions + poll sidebar */}
