@@ -14,6 +14,7 @@ const Index = () => {
       <Navbar />
       <Ticker />
       <Hero />
+      <LatestUpdate />
       <InfoBoxes />
 
       {/* Main content: predictions + poll sidebar */}
