@@ -5,6 +5,7 @@ const convergences = [
   {
     title: "Winter 2026 Squeeze",
     trajectories: ["Energy", "Food & Agri", "Economy"],
+    image: "https://images.unsplash.com/photo-1489549132488-d00b7eee80f1?w=800&q=75&sat=-100",
     summary:
       "Gas prices up. Fertilizer costs up. Food prices up. Rent up. Inflation sustained. Cost-of-living crisis by autumn 2026.",
     timeline: "October 2026",
